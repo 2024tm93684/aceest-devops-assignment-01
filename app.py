@@ -21,17 +21,21 @@ PROGRAMS = {
     }
 }
 
+
 @app.route('/')
 def index():
     return jsonify({"message": "ACEest Fitness API", "status": "ok"})
+
 
 @app.route('/health')
 def health():
     return jsonify({"status": "healthy"}), 200
 
+
 @app.route('/programs')
 def get_programs():
     return jsonify({"programs": list(PROGRAMS.keys())})
+
 
 @app.route('/program/<name>')
 def get_program(name):
@@ -39,10 +43,11 @@ def get_program(name):
         return jsonify({"error": "Program not found"}), 404
     return jsonify(PROGRAMS[name])
 
+
 @app.route('/calculate_calories', methods=['POST'])
 def calculate_calories():
     data = request.get_json()
-    weight  = data.get("weight")
+    weight = data.get("weight")
     program = data.get("program")
     if not weight or not program:
         return jsonify({"error": "weight and program required"}), 400
@@ -52,6 +57,7 @@ def calculate_calories():
         return jsonify({"error": "Invalid weight"}), 400
     calories = int(weight * PROGRAMS[program]["calorie_factor"])
     return jsonify({"calories": calories, "program": program, "weight": weight})
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
