@@ -16,4 +16,3 @@ jobs:
         with: { python-version: '3.11' }
       - run: pip install -r requirements.txt
       - run: flake8 app.py --max-line-length=120 --ignore=E501
-      # docker-build and test jobs added at v2.0.1 when Dockerfile and tests exist

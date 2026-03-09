@@ -21,6 +21,8 @@ PROGRAMS = {
     },
 }
 
+clients_store = []
+
 
 @app.route("/")
 def index():
@@ -72,6 +74,44 @@ def calculate_calories():
 @app.route("/site_metrics")
 def site_metrics():
     return jsonify({"capacity": 150, "area_sqft": 10000, "break_even_members": 250})
+
+
+@app.route("/client", methods=["POST"])
+def save_client():
+    data = request.get_json()
+    name = data.get("name")
+    program = data.get("program")
+    if not name or not program:
+        return jsonify({"error": "name and program required"}), 400
+    if program not in PROGRAMS:
+        return jsonify({"error": "Invalid program"}), 404
+    weight = data.get("weight", 0)
+    calories = int(weight * PROGRAMS[program]["calorie_factor"])
+    client = {
+        "name": name,
+        "age": data.get("age", 0),
+        "weight": weight,
+        "program": program,
+        "adherence": data.get("adherence", 0),
+        "notes": data.get("notes", ""),
+        "calories": calories,
+    }
+    clients_store.append(client)
+    return jsonify({"message": "Client saved", "client": client})
+
+
+@app.route("/clients")
+def list_clients():
+    return jsonify({"clients": clients_store, "count": len(clients_store)})
+
+
+@app.route("/export_clients")
+def export_clients():
+    # Mirrors export_csv() from Aceestver1_1_2.py — returns CSV-ready data
+    headers = ["name", "age", "weight", "program", "adherence", "notes"]
+    return jsonify(
+        {"headers": headers, "rows": [[c[h] for h in headers] for c in clients_store]}
+    )
 
 
 if __name__ == "__main__":
