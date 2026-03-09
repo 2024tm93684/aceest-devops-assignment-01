@@ -34,4 +34,3 @@ jobs:
       - uses: actions/checkout@v3
       - run: docker build -t aceest-fitness:test .
       - run: docker run aceest-fitness:test pytest test_app.py -v --tb=short --cov=app --cov-report=term-missing --cov-fail-under=80
-      # Quality Gate: job FAILS if coverage drops below 80% — blocks merge to develop
