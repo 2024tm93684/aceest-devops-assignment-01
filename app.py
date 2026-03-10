@@ -171,5 +171,18 @@ def site_metrics():
     return jsonify({"capacity": 150, "area_sqft": 10000, "break_even_members": 250})
 
 
+@app.route("/progress/<client_name>")
+def get_progress(client_name):
+    conn = get_db()
+    rows = conn.execute(
+        "SELECT week, adherence FROM progress WHERE client_name=? ORDER BY id",
+        (client_name,),
+    ).fetchall()
+    conn.close()
+    if not rows:
+        return jsonify({"error": "No progress data found"}), 404
+    return jsonify({"client": client_name, "progress": [dict(r) for r in rows]})
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=True)
