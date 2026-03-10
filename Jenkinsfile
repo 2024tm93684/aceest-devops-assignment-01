@@ -2,11 +2,11 @@ pipeline {
     agent any
     stages {
         stage('Checkout')         { steps { checkout scm } }
-        stage('Build Environment') { steps { sh 'pip install -r requirements.txt' } }
-        stage('Lint')             { steps { sh 'flake8 app.py --max-line-length=120 --ignore=E501' } }
+        stage('Build Environment') { steps { sh 'python3 -m pip install -r requirements.txt' } }
+        stage('Lint')             { steps { sh 'python3 -m flake8 app.py --max-line-length=120 --ignore=E501' } }
         stage('Unit Tests') {
             steps {
-                sh 'pytest test_app.py -v --cov=app --cov-report=term-missing --cov-fail-under=80'
+                sh 'python3 -m pytest test_app.py -v --cov=app --cov-report=term-missing --cov-fail-under=80'
             }
             // Quality Gate: build FAILS automatically if coverage drops below 80%
         }
