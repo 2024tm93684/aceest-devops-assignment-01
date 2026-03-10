@@ -281,3 +281,36 @@ def test_login_invalid(client):
 def test_list_users(client):
     data = json.loads(client.get("/users").data)
     assert len(data["users"]) >= 1
+
+
+def test_generate_program(client):
+    client.post(
+        "/client",
+        data=json.dumps({"name": "Priya", "program": "Beginner (BG)", "weight": 55}),
+        content_type="application/json",
+    )
+    r = client.get("/generate_program/Priya")
+    assert r.status_code == 200 and "generated_program" in json.loads(r.data)
+
+
+def test_generate_pdf(client):
+    client.post(
+        "/client",
+        data=json.dumps({"name": "Priya", "program": "Beginner (BG)", "weight": 55}),
+        content_type="application/json",
+    )
+    r = client.get("/generate_pdf/Priya")
+    assert r.status_code == 200 and "PDF generated" in json.loads(r.data)["message"]
+
+
+def test_membership(client):
+    client.post(
+        "/client",
+        data=json.dumps({"name": "Priya", "program": "Beginner (BG)", "weight": 55}),
+        content_type="application/json",
+    )
+    assert client.get("/membership/Priya").status_code == 200
+
+
+def test_membership_not_found(client):
+    assert client.get("/membership/Ghost").status_code == 404
