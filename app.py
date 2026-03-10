@@ -70,6 +70,15 @@ def init_db():
             id INTEGER PRIMARY KEY AUTOINCREMENT, client_name TEXT,
             week TEXT, adherence INTEGER)"""
         )
+        # new users table and default admin
+        conn.execute(
+            """CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT UNIQUE, password TEXT, role TEXT)"""
+        )
+        conn.execute(
+            "INSERT OR IGNORE INTO users (username,password,role) VALUES ('admin','admin','Admin')"
+        )
         conn.commit()
     except Exception as e:
         return db_error(e)
@@ -220,6 +229,31 @@ def export_clients():
 @app.route("/site_metrics")
 def site_metrics():
     return jsonify({"capacity": 150, "area_sqft": 10000, "break_even_members": 250})
+
+
+@app.route("/login", methods=["POST"])
+def login():
+    data = request.get_json()
+    username = data.get("username")
+    password = data.get("password")
+    if not username or not password:
+        return jsonify({"error": "username and password required"}), 400
+    conn = get_db()
+    row = conn.execute(
+        "SELECT role FROM users WHERE username=? AND password=?", (username, password)
+    ).fetchone()
+    conn.close()
+    if row:
+        return jsonify({"message": "Login successful", "role": row["role"]})
+    return jsonify({"error": "Invalid credentials"}), 401
+
+
+@app.route("/users")
+def list_users():
+    conn = get_db()
+    rows = conn.execute("SELECT username, role FROM users").fetchall()
+    conn.close()
+    return jsonify({"users": [dict(r) for r in rows]})
 
 
 @app.route("/progress/<client_name>")

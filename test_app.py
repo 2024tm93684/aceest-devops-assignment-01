@@ -258,3 +258,26 @@ def test_status(client):
     r = client.get("/status")
     assert r.status_code == 200
     assert "total_clients" in json.loads(r.data)
+
+
+def test_login_valid(client):
+    r = client.post(
+        "/login",
+        data=json.dumps({"username": "admin", "password": "admin"}),
+        content_type="application/json",
+    )
+    assert r.status_code == 200 and json.loads(r.data)["role"] == "Admin"
+
+
+def test_login_invalid(client):
+    r = client.post(
+        "/login",
+        data=json.dumps({"username": "hacker", "password": "wrong"}),
+        content_type="application/json",
+    )
+    assert r.status_code == 401
+
+
+def test_list_users(client):
+    data = json.loads(client.get("/users").data)
+    assert len(data["users"]) >= 1
