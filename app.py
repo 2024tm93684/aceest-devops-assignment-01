@@ -30,21 +30,28 @@ def get_db():
     return conn
 
 
+def db_error(e):
+    return jsonify({"error": str(e)}), 500
+
+
 def init_db():
-    # Schema from Aceestver2_0_1.py init_db()
-    conn = get_db()
-    conn.execute(
-        """CREATE TABLE IF NOT EXISTS clients (
-        id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT UNIQUE,
-        age INTEGER, weight REAL, program TEXT, calories INTEGER)"""
-    )
-    conn.execute(
-        """CREATE TABLE IF NOT EXISTS progress (
-        id INTEGER PRIMARY KEY AUTOINCREMENT, client_name TEXT,
-        week TEXT, adherence INTEGER)"""
-    )
-    conn.commit()
-    conn.close()
+    try:
+        conn = get_db()
+        conn.execute(
+            """CREATE TABLE IF NOT EXISTS clients (
+            id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT UNIQUE,
+            age INTEGER, weight REAL, program TEXT, calories INTEGER)"""
+        )
+        conn.execute(
+            """CREATE TABLE IF NOT EXISTS progress (
+            id INTEGER PRIMARY KEY AUTOINCREMENT, client_name TEXT,
+            week TEXT, adherence INTEGER)"""
+        )
+        conn.commit()
+    except Exception as e:
+        return db_error(e)
+    finally:
+        conn.close()
 
 
 init_db()
@@ -106,21 +113,29 @@ def save_client():
     weight = data.get("weight", 0)
     age = data.get("age", 0)
     calories = int(weight * PROGRAMS[program]["calorie_factor"])
-    conn = get_db()
-    conn.execute(
-        "INSERT OR REPLACE INTO clients (name,age,weight,program,calories) VALUES (?,?,?,?,?)",
-        (name, age, weight, program, calories),
-    )
-    conn.commit()
-    conn.close()
+    try:
+        conn = get_db()
+        conn.execute(
+            "INSERT OR REPLACE INTO clients (name,age,weight,program,calories) VALUES (?,?,?,?,?)",
+            (name, age, weight, program, calories),
+        )
+        conn.commit()
+    except Exception as e:
+        return db_error(e)
+    finally:
+        conn.close()
     return jsonify({"message": "Client saved", "name": name, "calories": calories})
 
 
 @app.route("/client/<name>")
 def get_client(name):
-    conn = get_db()
-    row = conn.execute("SELECT * FROM clients WHERE name=?", (name,)).fetchone()
-    conn.close()
+    try:
+        conn = get_db()
+        row = conn.execute("SELECT * FROM clients WHERE name=?", (name,)).fetchone()
+    except Exception as e:
+        return db_error(e)
+    finally:
+        conn.close()
     if not row:
         return jsonify({"error": "Not found"}), 404
     return jsonify(dict(row))
@@ -128,9 +143,13 @@ def get_client(name):
 
 @app.route("/clients")
 def list_clients():
-    conn = get_db()
-    rows = conn.execute("SELECT name FROM clients ORDER BY name").fetchall()
-    conn.close()
+    try:
+        conn = get_db()
+        rows = conn.execute("SELECT name FROM clients ORDER BY name").fetchall()
+    except Exception as e:
+        return db_error(e)
+    finally:
+        conn.close()
     return jsonify({"clients": [r["name"] for r in rows]})
 
 
@@ -142,24 +161,32 @@ def save_progress():
     if not name or adherence is None:
         return jsonify({"error": "client_name and adherence required"}), 400
     week = datetime.now().strftime("Week %U - %Y")
-    conn = get_db()
-    conn.execute(
-        "INSERT INTO progress (client_name,week,adherence) VALUES (?,?,?)",
-        (name, week, adherence),
-    )
-    conn.commit()
-    conn.close()
+    try:
+        conn = get_db()
+        conn.execute(
+            "INSERT INTO progress (client_name,week,adherence) VALUES (?,?,?)",
+            (name, week, adherence),
+        )
+        conn.commit()
+    except Exception as e:
+        return db_error(e)
+    finally:
+        conn.close()
     return jsonify({"message": "Progress saved"})
 
 
 # --- carried forward from v1.1.2 ---
 @app.route("/export_clients")
 def export_clients():
-    conn = get_db()
-    rows = conn.execute(
-        "SELECT name,age,weight,program,calories FROM clients ORDER BY name"
-    ).fetchall()
-    conn.close()
+    try:
+        conn = get_db()
+        rows = conn.execute(
+            "SELECT name,age,weight,program,calories FROM clients ORDER BY name"
+        ).fetchall()
+    except Exception as e:
+        return db_error(e)
+    finally:
+        conn.close()
     headers = ["name", "age", "weight", "program", "calories"]
     return jsonify(
         {"headers": headers, "rows": [[r[h] for h in headers] for r in rows]}

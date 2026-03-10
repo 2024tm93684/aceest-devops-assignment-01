@@ -5,11 +5,15 @@ from app import app as flask_app
 
 @pytest.fixture
 def client(tmp_path, monkeypatch):
-    monkeypatch.setattr(app_module, "DB", str(tmp_path / "test.db"))
+    db_path = tmp_path / "test.db"
+    monkeypatch.setattr(app_module, "DB", str(db_path))
     app_module.init_db()
     flask_app.config["TESTING"] = True
     with flask_app.test_client() as c:
         yield c
+    # cleanup
+    if db_path.exists():
+        db_path.unlink()
 
 
 def test_index(client):
