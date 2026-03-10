@@ -252,3 +252,9 @@ def test_bmi(client):
     )
     r = client.get("/bmi/Raj")
     assert r.status_code == 200 and "bmi" in json.loads(r.data)
+
+
+def test_status(client):
+    r = client.get("/status")
+    assert r.status_code == 200
+    assert "total_clients" in json.loads(r.data)

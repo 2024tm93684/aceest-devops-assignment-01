@@ -91,6 +91,14 @@ def health():
     return jsonify({"status": "healthy"}), 200
 
 
+@app.route("/status")
+def status():
+    conn = get_db()
+    client_count = conn.execute("SELECT COUNT(*) FROM clients").fetchone()[0]
+    conn.close()
+    return jsonify({"status": "running", "total_clients": client_count})
+
+
 @app.route("/programs")
 def get_programs():
     return jsonify({"programs": list(PROGRAMS.keys())})
