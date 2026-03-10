@@ -149,3 +149,17 @@ def test_export_clients(client):
 def test_site_metrics(client):
     data = json.loads(client.get("/site_metrics").data)
     assert "capacity" in data and data["capacity"] == 150
+
+
+def test_get_progress(client):
+    client.post(
+        "/progress",
+        data=json.dumps({"client_name": "Raj", "adherence": 80}),
+        content_type="application/json",
+    )
+    data = json.loads(client.get("/progress/Raj").data)
+    assert len(data["progress"]) == 1 and data["progress"][0]["adherence"] == 80
+
+
+def test_get_progress_no_data(client):
+    assert client.get("/progress/Nobody").status_code == 404
