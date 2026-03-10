@@ -25,6 +25,10 @@ def get_db():
     return conn
 
 
+def db_error(e):
+    return jsonify({"error": str(e)}), 500
+
+
 def init_db():
     try:
         conn = get_db()
@@ -43,7 +47,7 @@ def init_db():
         ]:
             try:
                 conn.execute(f"ALTER TABLE clients ADD COLUMN {col} {typ}")
-            except:
+            except Exception:
                 pass  # column already exists — safe to ignore
         # Add 3 new tables:
         conn.execute(
