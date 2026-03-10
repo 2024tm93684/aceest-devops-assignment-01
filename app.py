@@ -1,6 +1,8 @@
 import sqlite3
 from flask import Flask, jsonify, request
 from datetime import datetime
+import random
+from fpdf import FPDF, XPos, YPos
 
 app = Flask(__name__)
 DB = "aceest.db"
@@ -16,6 +18,14 @@ PROGRAMS = {
         "desc": "Push/Pull/Legs hypertrophy",
     },
     "Beginner (BG)": {"calorie_factor": 26, "desc": "3-day beginner full-body"},
+}
+
+
+# Templates from Aceestver-3_2_4.py self.program_templates
+PROGRAM_TEMPLATES = {
+    "Fat Loss": ["Full Body HIIT", "Circuit Training", "Cardio + Weights"],
+    "Muscle Gain": ["Push/Pull/Legs", "Upper/Lower Split", "Full Body Strength"],
+    "Beginner": ["Full Body 3x/week", "Light Strength + Mobility"],
 }
 
 
@@ -250,10 +260,74 @@ def login():
 
 @app.route("/users")
 def list_users():
-    conn = get_db()
-    rows = conn.execute("SELECT username, role FROM users").fetchall()
-    conn.close()
+    try:
+        conn = get_db()
+        rows = conn.execute("SELECT username, role FROM users").fetchall()
+    except Exception as e:
+        return db_error(e)
+    finally:
+        conn.close()
     return jsonify({"users": [dict(r) for r in rows]})
+
+
+@app.route("/generate_program/<client_name>")
+def generate_program(client_name):
+    ptype = random.choice(list(PROGRAM_TEMPLATES.keys()))
+    detail = random.choice(PROGRAM_TEMPLATES[ptype])
+    try:
+        conn = get_db()
+        conn.execute("UPDATE clients SET program=? WHERE name=?", (detail, client_name))
+        conn.commit()
+    except Exception as e:
+        return db_error(e)
+    finally:
+        conn.close()
+    return jsonify({"client": client_name, "generated_program": detail, "type": ptype})
+
+
+@app.route("/generate_pdf/<client_name>")
+def generate_pdf(client_name):
+    try:
+        conn = get_db()
+        row = conn.execute(
+            "SELECT * FROM clients WHERE name=?", (client_name,)
+        ).fetchone()
+    except Exception as e:
+        return db_error(e)
+    finally:
+        conn.close()
+    if not row:
+        return jsonify({"error": "Client not found"}), 404
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Helvetica", "B", 16)
+    pdf.cell(
+        0, 10, f"ACEest Report - {client_name}", new_x=XPos.LMARGIN, new_y=YPos.NEXT
+    )
+    pdf.set_font("Helvetica", "", 12)
+    for key in row.keys():
+        pdf.cell(0, 10, f"{key}: {row[key]}", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    fname = f"/tmp/{client_name}_report.pdf"
+    pdf.output(fname)
+    return jsonify({"message": "PDF generated", "file": fname})
+
+
+@app.route("/membership/<client_name>")
+def membership(client_name):
+    try:
+        conn = get_db()
+        row = conn.execute(
+            "SELECT membership_expiry FROM clients WHERE name=?", (client_name,)
+        ).fetchone()
+    except Exception as e:
+        return db_error(e)
+    finally:
+        conn.close()
+    if not row:
+        return jsonify({"error": "Not found"}), 404
+    return jsonify(
+        {"client": client_name, "membership_expiry": row["membership_expiry"]}
+    )
 
 
 @app.route("/progress/<client_name>")
