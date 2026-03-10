@@ -22,13 +22,13 @@ def test_health(client):
 
 def test_programs_list(client):
     data = json.loads(client.get("/programs").data)
-    assert len(data["programs"]) == 3
-    assert "Fat Loss (FL)" in data["programs"]
+    assert len(data["programs"]) == 4
+    assert "Fat Loss (FL) – 3 day" in data["programs"]
 
 
 def test_get_valid_program(client):
-    data = json.loads(client.get("/program/Fat Loss (FL)").data)
-    assert "calorie_factor" in data and "workout" in data
+    data = json.loads(client.get("/program/Beginner (BG)").data)
+    assert "calorie_factor" in data and "desc" in data
 
 
 def test_get_invalid_program(client):
@@ -38,7 +38,7 @@ def test_get_invalid_program(client):
 def test_calc_fl(client):
     r = client.post(
         "/calculate_calories",
-        data=json.dumps({"weight": 70, "program": "Fat Loss (FL)"}),
+        data=json.dumps({"weight": 70, "program": "Fat Loss (FL) – 3 day"}),
         content_type="application/json",
     )
     assert json.loads(r.data)["calories"] == 1540  # 70×22
@@ -47,7 +47,7 @@ def test_calc_fl(client):
 def test_calc_mg(client):
     r = client.post(
         "/calculate_calories",
-        data=json.dumps({"weight": 80, "program": "Muscle Gain (MG)"}),
+        data=json.dumps({"weight": 80, "program": "Muscle Gain (MG) – PPL"}),
         content_type="application/json",
     )
     assert json.loads(r.data)["calories"] == 2800  # 80×35
@@ -86,7 +86,12 @@ def test_save_and_get_client(client):
     client.post(
         "/client",
         data=json.dumps(
-            {"name": "Arjun", "program": "Fat Loss (FL)", "weight": 75, "age": 30}
+            {
+                "name": "Arjun",
+                "program": "Fat Loss (FL) – 3 day",
+                "weight": 75,
+                "age": 30,
+            }
         ),
         content_type="application/json",
     )
@@ -163,3 +168,87 @@ def test_get_progress(client):
 
 def test_get_progress_no_data(client):
     assert client.get("/progress/Nobody").status_code == 404
+
+
+def test_programs_now_4(client):
+    data = json.loads(client.get("/programs").data)
+    assert len(data["programs"]) == 4
+    assert "Fat Loss (FL) – 5 day" in data["programs"]
+
+
+def test_calc_fl5day(client):
+    r = client.post(
+        "/calculate_calories",
+        data=json.dumps({"weight": 70, "program": "Fat Loss (FL) – 5 day"}),
+        content_type="application/json",
+    )
+    assert json.loads(r.data)["calories"] == 1680  # 70×24
+
+
+def test_log_workout(client):
+    r = client.post(
+        "/workout",
+        data=json.dumps(
+            {"client_name": "Raj", "workout_type": "Strength", "duration_min": 60}
+        ),
+        content_type="application/json",
+    )
+    assert r.status_code == 200
+
+
+def test_log_workout_missing(client):
+    assert (
+        client.post(
+            "/workout",
+            data=json.dumps({"client_name": "Raj"}),
+            content_type="application/json",
+        ).status_code
+        == 400
+    )
+
+
+def test_log_metrics(client):
+    r = client.post(
+        "/metrics",
+        data=json.dumps(
+            {"client_name": "Raj", "weight": 75, "waist": 82, "bodyfat": 18}
+        ),
+        content_type="application/json",
+    )
+    assert r.status_code == 200
+
+
+def test_get_workouts(client):
+    client.post(
+        "/workout",
+        data=json.dumps(
+            {"client_name": "Raj", "workout_type": "Strength", "duration_min": 60}
+        ),
+        content_type="application/json",
+    )
+    r = client.get("/workouts/Raj")
+    assert r.status_code == 200 and len(json.loads(r.data)["workouts"]) == 1
+
+
+def test_get_metrics_history(client):
+    client.post(
+        "/metrics",
+        data=json.dumps(
+            {"client_name": "Raj", "weight": 75, "waist": 82, "bodyfat": 18}
+        ),
+        content_type="application/json",
+    )
+    r = client.get("/metrics/Raj")
+    assert r.status_code == 200 and len(json.loads(r.data)["metrics"]) == 1
+
+
+def test_bmi(client):
+    client.post(
+        "/client",
+        data=json.dumps(
+            {"name": "Raj", "program": "Beginner (BG)", "weight": 70, "height": 175}
+        ),
+        content_type="application/json",
+    )
+    r = client.get("/bmi/Raj")
+    assert r.status_code == 200 and "bmi" in json.loads(r.data)
