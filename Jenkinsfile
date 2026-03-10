@@ -2,7 +2,7 @@ pipeline {
     agent any
     stages {
         stage('Checkout')         { steps { checkout scm } }
-        stage('Build Environment') { steps { sh 'python3 -m pip install -r requirements.txt' } }
+        stage('Build Environment') { steps { sh 'python3 -m pip install -r requirements.txt --break-system-packages' } }
         stage('Lint')             { steps { sh 'python3 -m flake8 app.py --max-line-length=120 --ignore=E501' } }
         stage('Unit Tests') {
             steps {
