@@ -1,6 +1,6 @@
 # ACEest Fitness & Gym — DevOps CI/CD Pipeline
 
-![CI/CD Pipeline](https://github.com/2024tm93684/aceest-devops-assignment-01/actions/workflows/main.yml/badge.svg)
+[![CI/CD Pipeline](https://github.com/2024tm93684/aceest-devops-assignment-01/actions/workflows/main.yml/badge.svg)](https://github.com/2024tm93684/aceest-devops-assignment-01/actions/workflows/main.yml)
 
 Flask REST API built version-by-version from 10 provided tkinter source files,
 demonstrating a complete DevOps workflow with automated testing, containerisation,
@@ -122,6 +122,22 @@ on a separate runtime. Together they demonstrate the DevOps principle of
 *pipeline-as-code* — the entire build, test, and package process is version-
 controlled in the repository alongside the application code.
 
+## Jenkins Pipeline Screenshots
+
+Here are visual proofs of the Jenkins CI/CD pipeline in action:
+
+### Jenkins Pipeline Stages
+![Jenkins Pipeline Stages](assets/stages.png)
+
+### Jenkins Build Console Output
+![Jenkins Build Console Output](assets/console.png)
+
+### Jenkins Build Data
+![Jenkins Build Data](assets/build-data.png)
+
+### Git Changes in Jenkins
+![Git Changes in Jenkins](assets/changes.png)
+
 ## Branching Strategy
 ```
 main        — production-only, receives ONE PR (develop → main at v3.2.4)
@@ -129,7 +145,7 @@ develop     — integration branch, receives all 10 feature PRs
 feature/*   — one branch per version (e.g. feature/v2.0.1-sqlite-db-tests-docker)
 ```
 Flow: feature/vX.X.X → develop (per version PR) → main (single final release PR)
-Release tags (v1.0 → v3.2.4) are cut from develop after each feature merge.
+Release tags (v1.0 → v3.2.4) are cut from develop after each feature merge to capture incremental version history across all 10 source file translations. In a production GitFlow setup, release tags would be cut from main after the final merge.
 
 ## Commit Convention
 | Prefix     | Used for                              |
