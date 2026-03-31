@@ -116,6 +116,9 @@ an on-premise CI setup, mirrors how enterprise teams run pipelines on internal
 infrastructure, and provides a full audit log of every build in the Jenkins UI at
 `http://localhost:8080`.
 
+*Note*
+To run the Jenkins pipeline locally, ensure Jenkins is running on your machine and accessible at a port e.g. http://localhost:8080. Clone this repository and configure a new Pipeline job in Jenkins pointing to this repository's Jenkinsfile. Note that port 8080 is also used by this assignment app as well — ensure only one is running at a time, or reconfigure Jenkins to use an alternate port.
+
 The two pipelines are intentionally redundant: GitHub Actions catches issues
 immediately at the PR stage, while Jenkins provides an independent verification
 on a separate runtime. Together they demonstrate the DevOps principle of
@@ -127,16 +130,40 @@ controlled in the repository alongside the application code.
 Here are visual proofs of the Jenkins CI/CD pipeline in action:
 
 ### Jenkins Pipeline Stages
-![Jenkins Pipeline Stages](assets/stages.png)
+![Jenkins Pipeline Stages](assets/Jenkins%20stages.png)
 
 ### Jenkins Build Console Output
-![Jenkins Build Console Output](assets/console.png)
+![Jenkins Build Console Output](assets/Jenkins%20console.png)
 
 ### Jenkins Build Data
-![Jenkins Build Data](assets/build-data.png)
+![Jenkins Build Data](assets/Jenkins%20build%20data.png)
 
 ### Git Changes in Jenkins
-![Git Changes in Jenkins](assets/changes.png)
+![Git Changes in Jenkins](assets/Jenkins%20changes.png)
+
+## Docker Screenshots
+
+### Docker Build
+![Docker Build](assets/Docker%20build.png)
+
+### Docker Run
+![Docker Run](assets/Docker%20run.png)
+
+### Docker Test Run
+![Docker Test Run](assets/Docker%20Test%20run.png)
+
+## Health Check Screenshot
+
+### Health Check (Browser)
+![Health Check](assets/Local%20health%20check.png)
+
+### Health Check (Postman)
+![Health Check Postman](assets/Local%20health%20check%20postman.png)
+
+## Test Run Screenshot
+
+### Test Run (Local)
+![Test Run Local](assets/Local%20test%20run.png)
 
 ## Branching Strategy
 ```
