@@ -130,40 +130,40 @@ controlled in the repository alongside the application code.
 Here are visual proofs of the Jenkins CI/CD pipeline in action:
 
 ### Jenkins Pipeline Stages
-![Jenkins Pipeline Stages](assets/Jenkins%20stages.png)
+![Jenkins Pipeline Stages](assets/assignment-1/Jenkins%20stages.png)
 
 ### Jenkins Build Console Output
-![Jenkins Build Console Output](assets/Jenkins%20console.png)
+![Jenkins Build Console Output](assets/assignment-1/Jenkins%20console.png)
 
 ### Jenkins Build Data
-![Jenkins Build Data](assets/Jenkins%20build%20data.png)
+![Jenkins Build Data](assets/assignment-1/Jenkins%20build%20data.png)
 
 ### Git Changes in Jenkins
-![Git Changes in Jenkins](assets/Jenkins%20changes.png)
+![Git Changes in Jenkins](assets/assignment-1/Jenkins%20changes.png)
 
 ## Docker Screenshots
 
 ### Docker Build
-![Docker Build](assets/Docker%20build.png)
+![Docker Build](assets/assignment-1/Docker%20build.png)
 
 ### Docker Run
-![Docker Run](assets/Docker%20run.png)
+![Docker Run](assets/assignment-1/Docker%20run.png)
 
 ### Docker Test Run
-![Docker Test Run](assets/Docker%20Test%20run.png)
+![Docker Test Run](assets/assignment-1/Docker%20Test%20run.png)
 
 ## Health Check Screenshot
 
 ### Health Check (Browser)
-![Health Check](assets/Local%20health%20check.png)
+![Health Check](assets/assignment-1/Local%20health%20check.png)
 
 ### Health Check (Postman)
-![Health Check Postman](assets/Local%20health%20check%20postman.png)
+![Health Check Postman](assets/assignment-1/Local%20health%20check%20postman.png)
 
 ## Test Run Screenshot
 
 ### Test Run (Local)
-![Test Run Local](assets/Local%20test%20run.png)
+![Test Run Local](assets/assignment-1/Local%20test%20run.png)
 
 ## Branching Strategy
 ```
