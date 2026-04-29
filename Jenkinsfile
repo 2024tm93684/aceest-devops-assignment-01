@@ -39,14 +39,14 @@ pipeline {
             }
             post {
                 always {
-                    # Archive test coverage XML as build artifact
+                    // Archive test coverage XML as build artifact
                     archiveArtifacts artifacts: 'coverage.xml', fingerprint: true
                 }
             }
         }
 
         stage('SonarQube Analysis') {
-            # Uses Docker-based sonar-scanner — works on M1/M2 Mac (no native ARM binary needed)
+            // Uses Docker-based sonar-scanner — works on M1/M2 Mac (no native ARM binary needed)
             steps {
                 withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
                     sh """
@@ -79,14 +79,14 @@ pipeline {
             }
             post {
                 always {
-                    # Archive Docker image tag as build artifact for this version
+                    // Archive Docker image tag as build artifact for this version
                     archiveArtifacts artifacts: 'build-artifact.txt', fingerprint: true
                 }
             }
         }
 
         stage('Test Inside Container') {
-            # Assignment requirement: "Execute Pytest-based automated tests inside the containerised environment"
+            // Assignment requirement: "Execute Pytest-based automated tests inside the containerised environment"
             steps {
                 sh """
                     docker run --rm ${DOCKER_IMAGE}:${DOCKER_TAG} \
