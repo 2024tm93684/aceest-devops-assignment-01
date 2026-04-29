@@ -109,12 +109,14 @@ tests with a coverage quality gate (pytest must pass with ≥80% coverage inside
 container). A PR cannot be merged if any of these three jobs fail — this applies to
 both feature → develop PRs and the final develop → main release PR.
 
-**Jenkins** (`Jenkinsfile`) is the *build server* — it runs the same five stages
-(Checkout → Install → Lint → Test with quality gate → Docker Build) but executes
-on a dedicated Jenkins server rather than GitHub's cloud runners. This demonstrates
-an on-premise CI setup, mirrors how enterprise teams run pipelines on internal
-infrastructure, and provides a full audit log of every build in the Jenkins UI at
-`http://localhost:8080`.
+**Jenkins** (`Jenkinsfile`) is the *build server* — it executes on a dedicated Jenkins
+server rather than GitHub's cloud runners, demonstrating an on-premise CI setup that
+mirrors how enterprise teams run pipelines on internal infrastructure. The pipeline
+polls GitHub every 5 minutes via `pollSCM('H/5 * * * *')` and runs seven sequential
+stages: Checkout → Build Environment → Lint → Unit Tests (≥80% coverage gate, XML
+artifact archived) → SonarQube Analysis → Docker Build & Push (image published to
+Docker Hub as `hisajwan/aceest-fitness:v3.2.4` and `:latest`) → Test Inside Container
+→ Deploy to Minikube.
 
 *Note*
 To run the Jenkins pipeline locally, ensure Jenkins is running on your machine and accessible at a port e.g. http://localhost:8080. Clone this repository and configure a new Pipeline job in Jenkins pointing to this repository's Jenkinsfile. Note that port 8080 is also used by this assignment app as well — ensure only one is running at a time, or reconfigure Jenkins to use an alternate port.
@@ -125,9 +127,9 @@ on a separate runtime. Together they demonstrate the DevOps principle of
 *pipeline-as-code* — the entire build, test, and package process is version-
 controlled in the repository alongside the application code.
 
-## Jenkins Pipeline Screenshots
+---
 
-Here are visual proofs of the Jenkins CI/CD pipeline in action:
+## Assignment 1 — Screenshots
 
 ### Jenkins Pipeline Stages
 ![Jenkins Pipeline Stages](assets/assignment-1/Jenkins%20stages.png)
@@ -141,8 +143,6 @@ Here are visual proofs of the Jenkins CI/CD pipeline in action:
 ### Git Changes in Jenkins
 ![Git Changes in Jenkins](assets/assignment-1/Jenkins%20changes.png)
 
-## Docker Screenshots
-
 ### Docker Build
 ![Docker Build](assets/assignment-1/Docker%20build.png)
 
@@ -152,18 +152,82 @@ Here are visual proofs of the Jenkins CI/CD pipeline in action:
 ### Docker Test Run
 ![Docker Test Run](assets/assignment-1/Docker%20Test%20run.png)
 
-## Health Check Screenshot
-
 ### Health Check (Browser)
 ![Health Check](assets/assignment-1/Local%20health%20check.png)
 
 ### Health Check (Postman)
 ![Health Check Postman](assets/assignment-1/Local%20health%20check%20postman.png)
 
-## Test Run Screenshot
-
 ### Test Run (Local)
 ![Test Run Local](assets/assignment-1/Local%20test%20run.png)
+
+---
+
+## Assignment 2 — Docker Hub, SonarQube, Kubernetes & Deployment Strategies
+
+### Docker Hub
+The Docker image is published to Docker Hub as part of the Jenkins pipeline. Two tags
+are pushed on every successful build: the versioned tag (`v3.2.4`) and `latest`.
+
+![Docker Hub Tags](assets/assignment-2/1.%20Docker%20Hub%20Tags.png)
+
+### SonarQube Analysis
+Static code analysis runs via `sonar-scanner` inside the Jenkins pipeline. Configuration
+is in `sonar-project.properties`. Coverage data from the pytest XML report is fed into
+SonarQube automatically.
+
+![SonarQube Analysis](assets/assignment-2/2.%20Sonar.png)
+![SonarQube Final Report](assets/assignment-2/18.%20SonarQube%20final.png)
+
+### Kubernetes — kubectl & Dashboard
+The app is deployed to a local Minikube cluster using `k8s/deployment.yaml` and
+`k8s/service.yaml`. The Jenkins pipeline applies these manifests and waits for the
+rollout to complete.
+
+![kubectl](assets/assignment-2/3.%20kubectl.png)
+![kubectl Dashboard](assets/assignment-2/4.%20kubectl%20dashboard.png)
+
+### Jenkins — SCM Polling & Full Pipeline
+
+The Jenkins job is configured with `pollSCM('H/5 * * * *')` to auto-trigger on new commits.
+
+![Jenkins Poll](assets/assignment-2/5.%20Jenkins%20Poll.png)
+![Jenkins Stage View](assets/assignment-2/6.%20Jenkins%20stage.png)
+![Jenkins Console Output](assets/assignment-2/7.%20Jenkins%20Console%20Output.png)
+![Jenkins Console Output — Coverage](assets/assignment-2/7.%20Jenkins%20Console%20Output%20coverage.png)
+![Jenkins Console Output — Finished](assets/assignment-2/7.%20Jenkins%20Console%20Output%20Finished.png)
+![Jenkins Build History](assets/assignment-2/8.%20Jenkins%20build%20history.png)
+![Jenkins Polling Logs](assets/assignment-2/8.%20Jenkins%20Polling%20logs.png)
+![Jenkins Change Logs](assets/assignment-2/9.%20Jenkins%20Change%20logs.png)
+![Jenkins Final Build](assets/assignment-2/17.%20Jenkins%20final%20build.png)
+![Jenkins Final Console Output](assets/assignment-2/17.%20Jenkins%20final%20console%20ouput.png)
+
+### Kubernetes Deployment Strategies
+
+Four deployment strategy manifests are provided under `k8s/`:
+
+| Strategy    | Manifests                                                              |
+|-------------|------------------------------------------------------------------------|
+| Rolling     | `k8s/deployment.yaml` (default Kubernetes rolling update)              |
+| Blue-Green  | `k8s/blue-green/deployment-blue.yaml`, `deployment-green.yaml`         |
+| Canary      | `k8s/canary/deployment-stable.yaml`, `deployment-canary.yaml`          |
+| Shadow      | `k8s/shadow/deployment-primary.yaml`, `deployment-shadow.yaml`         |
+| A/B Testing | `k8s/ab-testing/deployment-a.yaml`, `deployment-b.yaml`                |
+
+![Rolling Update](assets/assignment-2/10.%20Rolling%20update.png)
+![Blue-Green Deployment](assets/assignment-2/11.%20Blue%20Green%20Deployment.png)
+![Canary Deployment](assets/assignment-2/12.%20Canary%20Deployment.png)
+![Shadow Deployment](assets/assignment-2/13.%20Shadow%20Deployment.png)
+![A/B Testing Deployment](assets/assignment-2/14.%20AB%20Deployment.png)
+
+### Kubernetes Rollback
+
+Both report-based and built-in `kubectl rollout undo` rollback approaches are demonstrated.
+
+![Report Rollback](assets/assignment-2/15.%20Report%20rollback.png)
+![Built-in Rollback](assets/assignment-2/16.%20Built%20in%20rollback.png)
+
+---
 
 ## Branching Strategy
 ```
