@@ -1,0 +1,500 @@
+Started by an SCM change
+Obtained Jenkinsfile from git https://github.com/2024tm93684/aceest-devops-assignment-01
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/jenkins_home/workspace/aceest-fitness
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/aceest-fitness/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/2024tm93684/aceest-devops-assignment-01 # timeout=10
+Fetching upstream changes from https://github.com/2024tm93684/aceest-devops-assignment-01
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+ > git fetch --tags --force --progress -- https://github.com/2024tm93684/aceest-devops-assignment-01 +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/develop^{commit} # timeout=10
+Checking out Revision 49fd501f923d061407769e3de91419e4ed40dba3 (refs/remotes/origin/develop)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 49fd501f923d061407769e3de91419e4ed40dba3 # timeout=10
+Commit message: "ci: fix SonarQube — use /usr/src as sources path for Docker scanner (#25)"
+ > git rev-list --no-walk c83fd5bb05848a131d358fe256b57d10eb12dd02 # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Checkout)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/aceest-fitness/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/2024tm93684/aceest-devops-assignment-01 # timeout=10
+Fetching upstream changes from https://github.com/2024tm93684/aceest-devops-assignment-01
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+ > git fetch --tags --force --progress -- https://github.com/2024tm93684/aceest-devops-assignment-01 +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/develop^{commit} # timeout=10
+Checking out Revision 49fd501f923d061407769e3de91419e4ed40dba3 (refs/remotes/origin/develop)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 49fd501f923d061407769e3de91419e4ed40dba3 # timeout=10
+Commit message: "ci: fix SonarQube — use /usr/src as sources path for Docker scanner (#25)"
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build Environment)
+[Pipeline] sh
++ python3 -m pip install -r requirements.txt --break-system-packages
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: flask==3.0.0 in /var/jenkins_home/.local/lib/python3.13/site-packages (from -r requirements.txt (line 1)) (3.0.0)
+Requirement already satisfied: matplotlib==3.8.0 in /var/jenkins_home/.local/lib/python3.13/site-packages (from -r requirements.txt (line 2)) (3.8.0)
+Requirement already satisfied: pytest==7.4.3 in /var/jenkins_home/.local/lib/python3.13/site-packages (from -r requirements.txt (line 3)) (7.4.3)
+Requirement already satisfied: pytest-cov==4.1.0 in /var/jenkins_home/.local/lib/python3.13/site-packages (from -r requirements.txt (line 4)) (4.1.0)
+Requirement already satisfied: flake8==6.1.0 in /var/jenkins_home/.local/lib/python3.13/site-packages (from -r requirements.txt (line 5)) (6.1.0)
+Requirement already satisfied: fpdf2==2.7.6 in /var/jenkins_home/.local/lib/python3.13/site-packages (from -r requirements.txt (line 6)) (2.7.6)
+Requirement already satisfied: Werkzeug>=3.0.0 in /var/jenkins_home/.local/lib/python3.13/site-packages (from flask==3.0.0->-r requirements.txt (line 1)) (3.1.6)
+Requirement already satisfied: Jinja2>=3.1.2 in /var/jenkins_home/.local/lib/python3.13/site-packages (from flask==3.0.0->-r requirements.txt (line 1)) (3.1.6)
+Requirement already satisfied: itsdangerous>=2.1.2 in /var/jenkins_home/.local/lib/python3.13/site-packages (from flask==3.0.0->-r requirements.txt (line 1)) (2.2.0)
+Requirement already satisfied: click>=8.1.3 in /var/jenkins_home/.local/lib/python3.13/site-packages (from flask==3.0.0->-r requirements.txt (line 1)) (8.3.1)
+Requirement already satisfied: blinker>=1.6.2 in /var/jenkins_home/.local/lib/python3.13/site-packages (from flask==3.0.0->-r requirements.txt (line 1)) (1.9.0)
+Requirement already satisfied: contourpy>=1.0.1 in /var/jenkins_home/.local/lib/python3.13/site-packages (from matplotlib==3.8.0->-r requirements.txt (line 2)) (1.3.3)
+Requirement already satisfied: cycler>=0.10 in /var/jenkins_home/.local/lib/python3.13/site-packages (from matplotlib==3.8.0->-r requirements.txt (line 2)) (0.12.1)
+Requirement already satisfied: fonttools>=4.22.0 in /var/jenkins_home/.local/lib/python3.13/site-packages (from matplotlib==3.8.0->-r requirements.txt (line 2)) (4.62.0)
+Requirement already satisfied: kiwisolver>=1.0.1 in /var/jenkins_home/.local/lib/python3.13/site-packages (from matplotlib==3.8.0->-r requirements.txt (line 2)) (1.5.0)
+Requirement already satisfied: numpy<2,>=1.21 in /var/jenkins_home/.local/lib/python3.13/site-packages (from matplotlib==3.8.0->-r requirements.txt (line 2)) (1.26.4)
+Requirement already satisfied: packaging>=20.0 in /usr/lib/python3/dist-packages (from matplotlib==3.8.0->-r requirements.txt (line 2)) (25.0)
+Requirement already satisfied: pillow>=6.2.0 in /var/jenkins_home/.local/lib/python3.13/site-packages (from matplotlib==3.8.0->-r requirements.txt (line 2)) (12.1.1)
+Requirement already satisfied: pyparsing>=2.3.1 in /var/jenkins_home/.local/lib/python3.13/site-packages (from matplotlib==3.8.0->-r requirements.txt (line 2)) (3.3.2)
+Requirement already satisfied: python-dateutil>=2.7 in /var/jenkins_home/.local/lib/python3.13/site-packages (from matplotlib==3.8.0->-r requirements.txt (line 2)) (2.9.0.post0)
+Requirement already satisfied: iniconfig in /var/jenkins_home/.local/lib/python3.13/site-packages (from pytest==7.4.3->-r requirements.txt (line 3)) (2.3.0)
+Requirement already satisfied: pluggy<2.0,>=0.12 in /var/jenkins_home/.local/lib/python3.13/site-packages (from pytest==7.4.3->-r requirements.txt (line 3)) (1.6.0)
+Requirement already satisfied: coverage>=5.2.1 in /var/jenkins_home/.local/lib/python3.13/site-packages (from coverage[toml]>=5.2.1->pytest-cov==4.1.0->-r requirements.txt (line 4)) (7.13.4)
+Requirement already satisfied: mccabe<0.8.0,>=0.7.0 in /var/jenkins_home/.local/lib/python3.13/site-packages (from flake8==6.1.0->-r requirements.txt (line 5)) (0.7.0)
+Requirement already satisfied: pycodestyle<2.12.0,>=2.11.0 in /var/jenkins_home/.local/lib/python3.13/site-packages (from flake8==6.1.0->-r requirements.txt (line 5)) (2.11.1)
+Requirement already satisfied: pyflakes<3.2.0,>=3.1.0 in /var/jenkins_home/.local/lib/python3.13/site-packages (from flake8==6.1.0->-r requirements.txt (line 5)) (3.1.0)
+Requirement already satisfied: defusedxml in /var/jenkins_home/.local/lib/python3.13/site-packages (from fpdf2==2.7.6->-r requirements.txt (line 6)) (0.7.1)
+Requirement already satisfied: MarkupSafe>=2.0 in /var/jenkins_home/.local/lib/python3.13/site-packages (from Jinja2>=3.1.2->flask==3.0.0->-r requirements.txt (line 1)) (3.0.3)
+Requirement already satisfied: six>=1.5 in /var/jenkins_home/.local/lib/python3.13/site-packages (from python-dateutil>=2.7->matplotlib==3.8.0->-r requirements.txt (line 2)) (1.17.0)
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Lint)
+[Pipeline] sh
++ python3 -m flake8 app.py --max-line-length=120 --ignore=E501
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Unit Tests)
+[Pipeline] sh
++ python3 -m pytest test_app.py -v --cov=app --cov-report=term-missing --cov-report=xml:coverage.xml --cov-fail-under=80
+============================= test session starts ==============================
+platform linux -- Python 3.13.5, pytest-7.4.3, pluggy-1.6.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /var/jenkins_home/workspace/aceest-fitness
+plugins: cov-4.1.0
+collecting ... collected 36 items
+
+test_app.py::test_index PASSED                                           [  2%]
+test_app.py::test_health PASSED                                          [  5%]
+test_app.py::test_programs_list PASSED                                   [  8%]
+test_app.py::test_get_valid_program PASSED                               [ 11%]
+test_app.py::test_get_invalid_program PASSED                             [ 13%]
+test_app.py::test_calc_fl PASSED                                         [ 16%]
+test_app.py::test_calc_mg PASSED                                         [ 19%]
+test_app.py::test_calc_missing PASSED                                    [ 22%]
+test_app.py::test_calc_invalid_weight PASSED                             [ 25%]
+test_app.py::test_calc_invalid_program PASSED                            [ 27%]
+test_app.py::test_save_and_get_client PASSED                             [ 30%]
+test_app.py::test_get_unknown_client PASSED                              [ 33%]
+test_app.py::test_list_clients PASSED                                    [ 36%]
+test_app.py::test_save_progress PASSED                                   [ 38%]
+test_app.py::test_save_progress_missing PASSED                           [ 41%]
+test_app.py::test_save_client_invalid_program PASSED                     [ 44%]
+test_app.py::test_export_clients PASSED                                  [ 47%]
+test_app.py::test_site_metrics PASSED                                    [ 50%]
+test_app.py::test_get_progress PASSED                                    [ 52%]
+test_app.py::test_get_progress_no_data PASSED                            [ 55%]
+test_app.py::test_programs_now_4 PASSED                                  [ 58%]
+test_app.py::test_calc_fl5day PASSED                                     [ 61%]
+test_app.py::test_log_workout PASSED                                     [ 63%]
+test_app.py::test_log_workout_missing PASSED                             [ 66%]
+test_app.py::test_log_metrics PASSED                                     [ 69%]
+test_app.py::test_get_workouts PASSED                                    [ 72%]
+test_app.py::test_get_metrics_history PASSED                             [ 75%]
+test_app.py::test_bmi PASSED                                             [ 77%]
+test_app.py::test_status PASSED                                          [ 80%]
+test_app.py::test_login_valid PASSED                                     [ 83%]
+test_app.py::test_login_invalid PASSED                                   [ 86%]
+test_app.py::test_list_users PASSED                                      [ 88%]
+test_app.py::test_generate_program PASSED                                [ 91%]
+test_app.py::test_generate_pdf PASSED                                    [ 94%]
+test_app.py::test_membership PASSED                                      [ 97%]
+test_app.py::test_membership_not_found PASSED                            [100%]
+
+---------- coverage: platform linux, python 3.13.5-final-0 -----------
+Name     Stmts   Miss  Cover   Missing
+--------------------------------------
+app.py     268     35    87%   39, 93-94, 160, 174-175, 214-215, 229-230, 250, 266-267, 281-282, 295-296, 300, 322-323, 341-342, 370-371, 382, 396-397, 411-412, 426-427, 440-441, 445, 451
+--------------------------------------
+TOTAL      268     35    87%
+Coverage XML written to file coverage.xml
+
+Required test coverage of 80% reached. Total coverage: 86.94%
+
+============================== 36 passed in 1.44s ==============================
+Post stage
+[Pipeline] archiveArtifacts
+Archiving artifacts
+Recording fingerprints
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (SonarQube Analysis)
+[Pipeline] withCredentials
+Masking supported pattern matches of $SONAR_TOKEN
+[Pipeline] {
+[Pipeline] sh
+Warning: A secret was passed to "sh" using Groovy String interpolation, which is insecure.
+		 Affected argument(s) used the following variable(s): [SONAR_TOKEN]
+		 See https://jenkins.io/redirect/groovy-string-interpolation for details.
++ sonar-scanner -Dsonar.projectKey=aceest-fitness -Dsonar.projectName=ACEest-Fitness -Dsonar.sources=. -Dsonar.python.version=3 -Dsonar.python.coverage.reportPaths=coverage.xml -Dsonar.host.url=http://host.docker.internal:9000 -Dsonar.login=****
+INFO: Scanner configuration file: /opt/sonar-scanner-5.0.1.3006/conf/sonar-scanner.properties
+INFO: Project root configuration file: /var/jenkins_home/workspace/aceest-fitness/sonar-project.properties
+INFO: SonarScanner 5.0.1.3006
+INFO: Java 21.0.9 Eclipse Adoptium (64-bit)
+INFO: Linux 5.15.49-linuxkit aarch64
+INFO: User cache: /var/jenkins_home/.sonar/cache
+INFO: Analyzing on SonarQube server 26.4.0.121862
+INFO: Default locale: "en", source code encoding: "UTF-8" (analysis is platform dependent)
+INFO: Load global settings
+INFO: Load global settings (done) | time=290ms
+INFO: Server id: 147B411E-AZ3aJCqDf0GIpsKpJLmT
+INFO: Loading required plugins
+INFO: Load plugins index
+INFO: Load plugins index (done) | time=149ms
+INFO: Load/download plugins
+INFO: Load/download plugins (done) | time=1061ms
+INFO: Process project properties
+INFO: Process project properties (done) | time=21ms
+INFO: Project key: aceest-fitness
+INFO: Base dir: /var/jenkins_home/workspace/aceest-fitness
+INFO: Working dir: /var/jenkins_home/workspace/aceest-fitness/.scannerwork
+INFO: Load project settings for component key: 'aceest-fitness'
+INFO: Load project settings for component key: 'aceest-fitness' (done) | time=118ms
+INFO: Load quality profiles
+INFO: Load quality profiles (done) | time=1083ms
+INFO: Auto-configuring with CI 'Jenkins'
+INFO: Load active rules
+INFO: Load active rules (done) | time=2039ms
+INFO: Load analysis cache
+INFO: Load analysis cache (404) | time=56ms
+WARN: The property 'sonar.login' is deprecated and will be removed in the future. Please use the 'sonar.token' property instead when passing a token.
+INFO: Preprocessing files...
+INFO: 1 language detected in 2 preprocessed files (done) | time=104ms
+INFO: 200 files ignored because of inclusion/exclusion patterns
+INFO: 0 files ignored because of scm ignore settings
+INFO: Loading plugins for detected languages
+INFO: Load/download plugins
+INFO: Load/download plugins (done) | time=597ms
+INFO: Load project repositories
+INFO: Load project repositories (done) | time=100ms
+INFO: Indexing files...
+INFO: Project configuration:
+INFO:   Included sources: app.py
+INFO:   Excluded sources: test_app.py, **/*.pyc, test_app.py
+INFO:   Included tests: test_app.py
+INFO: 2 files indexed (done) | time=6ms
+INFO: Quality profile for py: Sonar way
+INFO: ------------- Run sensors on module ACEest-Fitness
+INFO: Load metrics repository
+INFO: Load metrics repository (done) | time=41ms
+INFO: Sensor IaC hadolint report Sensor [iac]
+INFO: Sensor IaC hadolint report Sensor [iac] (done) | time=0ms
+INFO: Sensor Java Config Sensor [iac]
+INFO: There are no files to be analyzed for the Java language
+INFO: Sensor Java Config Sensor [iac] (done) | time=4ms
+INFO: Sensor IaC Docker Sensor [iac]
+INFO: There are no files to be analyzed for the Docker language
+INFO: Sensor IaC Docker Sensor [iac] (done) | time=1ms
+INFO: Sensor Python Sensor [python]
+INFO: Starting global symbols computation
+INFO: 2 source files to be analyzed
+INFO: 2/2 source files have been analyzed
+INFO: Finished step global symbols computation in 250ms
+INFO: Starting rules execution
+INFO: 2 source files to be analyzed
+INFO: 2/2 source files have been analyzed
+INFO: Finished step rules execution in 1342ms
+INFO: The Python analyzer was able to leverage cached data from previous analyses for 0 out of 2 files. These files were not parsed.
+INFO: Sensor Python Sensor [python] (done) | time=1799ms
+INFO: Sensor Cobertura Sensor for Python coverage [python]
+INFO: Python test coverage
+INFO: Parsing report '/var/jenkins_home/workspace/aceest-fitness/coverage.xml'
+INFO: Sensor Cobertura Sensor for Python coverage [python] (done) | time=143ms
+INFO: Sensor PythonXUnitSensor [python]
+INFO: Sensor PythonXUnitSensor [python] (done) | time=5ms
+INFO: Sensor Python Dependency Sensor [python]
+INFO: Sensor Python Dependency Sensor [python] (done) | time=4ms
+INFO: Sensor TextAndSecretsSensor [text]
+INFO: Available processors: 4
+INFO: Using 4 threads for analysis.
+INFO: Start fetching files for the text and secrets analysis
+INFO: Using Git CLI to retrieve dirty files
+INFO: Retrieving language associated files and files included via "sonar.text.inclusions" that are tracked by git
+INFO: Starting the text and secrets analysis
+INFO: 2 source files to be analyzed for the text and secrets analysis
+INFO: 2/2 source files have been analyzed for the text and secrets analysis
+INFO: Sensor TextAndSecretsSensor [text] (done) | time=471ms
+INFO: ------------- Run sensors on project
+INFO: Sensor Zero Coverage Sensor
+INFO: Sensor Zero Coverage Sensor (done) | time=0ms
+INFO: ------------- Gather SCA dependencies on project
+INFO: Dependency analysis skipped
+INFO: SCM Publisher SCM provider for this project is: git
+INFO: SCM Publisher 2 source files to be analyzed
+INFO: SCM Publisher 2/2 source files have been analyzed (done) | time=157ms
+INFO: CPD Executor Calculating CPD for 1 file
+INFO: CPD Executor CPD calculation finished (done) | time=5ms
+INFO: SCM revision ID '49fd501f923d061407769e3de91419e4ed40dba3'
+INFO: Analysis report generated in 194ms, dir size=337.2 kB
+INFO: Analysis report compressed in 28ms, zip size=63.8 kB
+INFO: Analysis report uploaded in 185ms
+INFO: ANALYSIS SUCCESSFUL, you can find the results at: http://host.docker.internal:9000/dashboard?id=aceest-fitness
+INFO: Note that you will be able to access the updated dashboard once the server has processed the submitted analysis report
+INFO: More about the report processing at http://host.docker.internal:9000/api/ce/task?id=0e5639ae-e328-4357-a12b-da28f0413eef
+INFO: Analysis total time: 8.845 s
+INFO: ------------------------------------------------------------------------
+INFO: EXECUTION SUCCESS
+INFO: ------------------------------------------------------------------------
+INFO: Total time: 13.120s
+INFO: Final Memory: 43M/150M
+INFO: ------------------------------------------------------------------------
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Docker Build & Push)
+[Pipeline] withCredentials
+Masking supported pattern matches of $DOCKER_PASS
+[Pipeline] {
+[Pipeline] sh
+Warning: A secret was passed to "sh" using Groovy String interpolation, which is insecure.
+		 Affected argument(s) used the following variable(s): [DOCKER_PASS]
+		 See https://jenkins.io/redirect/groovy-string-interpolation for details.
++ + docker login -u hisajwan --password-stdin
+echo ****
+WARNING! Your password will be stored unencrypted in /var/jenkins_home/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
++ docker build -t hisajwan/aceest-fitness:v3.2.4 .
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 32B 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load .dockerignore
+#2 transferring context: 2B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 ...
+
+#4 [auth] library/python:pull token for registry-1.docker.io
+#4 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 0.5s
+
+#5 [1/7] FROM docker.io/library/python:3.11-slim@sha256:6d85378d88a19cd4d76079817532d62232be95757cb45945a99fec8e8084b9c2
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 94B done
+#6 DONE 0.0s
+
+#7 [6/7] COPY test_app.py .
+#7 CACHED
+
+#8 [2/7] WORKDIR /app
+#8 CACHED
+
+#9 [4/7] RUN pip install --no-cache-dir -r requirements.txt
+#9 CACHED
+
+#10 [3/7] COPY requirements.txt .
+#10 CACHED
+
+#11 [5/7] COPY app.py .
+#11 CACHED
+
+#12 [7/7] RUN useradd -m appuser && chown -R appuser:appuser /app
+#12 CACHED
+
+#13 exporting to image
+#13 exporting layers done
+#13 writing image sha256:6bbf2169a50464b601aba56a98671830ccf38aed31b99af4f91c13ac7db6c6b5 0.0s done
+#13 naming to docker.io/hisajwan/aceest-fitness:v3.2.4 done
+#13 DONE 0.0s
++ docker tag hisajwan/aceest-fitness:v3.2.4 hisajwan/aceest-fitness:latest
++ docker push hisajwan/aceest-fitness:v3.2.4
+The push refers to repository [docker.io/hisajwan/aceest-fitness]
+938febd776fb: Preparing
+ce51c4a9f419: Preparing
+479cb6a69e25: Preparing
+8ead088bb405: Preparing
+0e5b233fa687: Preparing
+4a684b2b1405: Preparing
+1f3392193453: Preparing
+2eeb77843f89: Preparing
+384ef01efa53: Preparing
+e6133723babd: Preparing
+4a684b2b1405: Waiting
+1f3392193453: Waiting
+2eeb77843f89: Waiting
+384ef01efa53: Waiting
+e6133723babd: Waiting
+8ead088bb405: Layer already exists
+0e5b233fa687: Layer already exists
+938febd776fb: Layer already exists
+ce51c4a9f419: Layer already exists
+479cb6a69e25: Layer already exists
+1f3392193453: Layer already exists
+e6133723babd: Layer already exists
+4a684b2b1405: Layer already exists
+2eeb77843f89: Layer already exists
+384ef01efa53: Layer already exists
+v3.2.4: digest: sha256:18f03112122874000deaa5c27d941a73c9784d6cb8457ddc7998695ef33115d9 size: 2408
++ docker push hisajwan/aceest-fitness:latest
+The push refers to repository [docker.io/hisajwan/aceest-fitness]
+938febd776fb: Preparing
+ce51c4a9f419: Preparing
+479cb6a69e25: Preparing
+8ead088bb405: Preparing
+0e5b233fa687: Preparing
+4a684b2b1405: Preparing
+1f3392193453: Preparing
+2eeb77843f89: Preparing
+384ef01efa53: Preparing
+e6133723babd: Preparing
+4a684b2b1405: Waiting
+1f3392193453: Waiting
+2eeb77843f89: Waiting
+384ef01efa53: Waiting
+e6133723babd: Waiting
+ce51c4a9f419: Layer already exists
+8ead088bb405: Layer already exists
+0e5b233fa687: Layer already exists
+938febd776fb: Layer already exists
+479cb6a69e25: Layer already exists
+4a684b2b1405: Layer already exists
+2eeb77843f89: Layer already exists
+e6133723babd: Layer already exists
+1f3392193453: Layer already exists
+384ef01efa53: Layer already exists
+latest: digest: sha256:18f03112122874000deaa5c27d941a73c9784d6cb8457ddc7998695ef33115d9 size: 2408
++ echo hisajwan/aceest-fitness:v3.2.4
+[Pipeline] }
+[Pipeline] // withCredentials
+Post stage
+[Pipeline] archiveArtifacts
+Archiving artifacts
+Recording fingerprints
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Test Inside Container)
+[Pipeline] sh
++ docker run --rm hisajwan/aceest-fitness:v3.2.4 python3 -m pytest test_app.py -v --cov=app --cov-report=term-missing --cov-fail-under=80
+============================= test session starts ==============================
+platform linux -- Python 3.11.15, pytest-7.4.3, pluggy-1.6.0 -- /usr/local/bin/python3
+cachedir: .pytest_cache
+rootdir: /app
+plugins: cov-4.1.0
+collecting ... collected 36 items
+
+test_app.py::test_index PASSED                                           [  2%]
+test_app.py::test_health PASSED                                          [  5%]
+test_app.py::test_programs_list PASSED                                   [  8%]
+test_app.py::test_get_valid_program PASSED                               [ 11%]
+test_app.py::test_get_invalid_program PASSED                             [ 13%]
+test_app.py::test_calc_fl PASSED                                         [ 16%]
+test_app.py::test_calc_mg PASSED                                         [ 19%]
+test_app.py::test_calc_missing PASSED                                    [ 22%]
+test_app.py::test_calc_invalid_weight PASSED                             [ 25%]
+test_app.py::test_calc_invalid_program PASSED                            [ 27%]
+test_app.py::test_save_and_get_client PASSED                             [ 30%]
+test_app.py::test_get_unknown_client PASSED                              [ 33%]
+test_app.py::test_list_clients PASSED                                    [ 36%]
+test_app.py::test_save_progress PASSED                                   [ 38%]
+test_app.py::test_save_progress_missing PASSED                           [ 41%]
+test_app.py::test_save_client_invalid_program PASSED                     [ 44%]
+test_app.py::test_export_clients PASSED                                  [ 47%]
+test_app.py::test_site_metrics PASSED                                    [ 50%]
+test_app.py::test_get_progress PASSED                                    [ 52%]
+test_app.py::test_get_progress_no_data PASSED                            [ 55%]
+test_app.py::test_programs_now_4 PASSED                                  [ 58%]
+test_app.py::test_calc_fl5day PASSED                                     [ 61%]
+test_app.py::test_log_workout PASSED                                     [ 63%]
+test_app.py::test_log_workout_missing PASSED                             [ 66%]
+test_app.py::test_log_metrics PASSED                                     [ 69%]
+test_app.py::test_get_workouts PASSED                                    [ 72%]
+test_app.py::test_get_metrics_history PASSED                             [ 75%]
+test_app.py::test_bmi PASSED                                             [ 77%]
+test_app.py::test_status PASSED                                          [ 80%]
+test_app.py::test_login_valid PASSED                                     [ 83%]
+test_app.py::test_login_invalid PASSED                                   [ 86%]
+test_app.py::test_list_users PASSED                                      [ 88%]
+test_app.py::test_generate_program PASSED                                [ 91%]
+test_app.py::test_generate_pdf PASSED                                    [ 94%]
+test_app.py::test_membership PASSED                                      [ 97%]
+test_app.py::test_membership_not_found PASSED                            [100%]
+
+---------- coverage: platform linux, python 3.11.15-final-0 ----------
+Name     Stmts   Miss  Cover   Missing
+--------------------------------------
+app.py     268     35    87%   39, 93-94, 160, 174-175, 214-215, 229-230, 250, 266-267, 281-282, 295-296, 300, 322-323, 341-342, 370-371, 382, 396-397, 411-412, 426-427, 440-441, 445, 451
+--------------------------------------
+TOTAL      268     35    87%
+
+Required test coverage of 80% reached. Total coverage: 86.94%
+
+============================== 36 passed in 1.08s ==============================
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy to Minikube)
+[Pipeline] sh
++ kubectl apply -f k8s/deployment.yaml
+deployment.apps/aceest-fitness unchanged
++ kubectl apply -f k8s/service.yaml
+service/aceest-fitness-service unchanged
++ kubectl rollout status deployment/aceest-fitness --timeout=120s
+deployment "aceest-fitness" successfully rolled out
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] echo
+BUILD SUCCESSFUL — deployed to Minikube
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
