@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aceest-canary
+spec:
+  replicas: 1   # 1 pod = 25% traffic (1 out of 4 total pods)
+  selector:
+    matchLabels:
+      app: aceest-fitness
+      track: canary
+  template:
+    metadata:
+      labels:
+        app: aceest-fitness
+        track: canary
+    spec:
+      containers:
+      - name: aceest-fitness
+        image: hisajwan/aceest-fitness:v3.2.4   # new version
+        ports:
+        - containerPort: 8080
