@@ -49,12 +49,14 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
                     sh """
-                        docker run --rm \\
-                            -e SONAR_HOST_URL=${SONAR_HOST} \\
-                            -e SONAR_TOKEN=${SONAR_TOKEN} \\
-                            -e "SONAR_SCANNER_OPTS=-Dsonar.projectKey=aceest-fitness -Dsonar.projectName=ACEest-Fitness -Dsonar.sources=/usr/src -Dsonar.python.version=3 -Dsonar.python.coverage.reportPaths=coverage.xml" \\
-                            -v \${WORKSPACE}:/usr/src \\
-                            sonarsource/sonar-scanner-cli
+                        sonar-scanner \\
+                            -Dsonar.projectKey=aceest-fitness \\
+                            -Dsonar.projectName=ACEest-Fitness \\
+                            -Dsonar.sources=. \\
+                            -Dsonar.python.version=3 \\
+                            -Dsonar.python.coverage.reportPaths=coverage.xml \\
+                            -Dsonar.host.url=${SONAR_HOST} \\
+                            -Dsonar.login=${SONAR_TOKEN}
                     """
                 }
             }
