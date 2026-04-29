@@ -46,14 +46,14 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-            // Uses Docker-based sonar-scanner — works on M1/M2 Mac (no native ARM binary needed)
             steps {
                 withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
                     sh """
-                        docker run --rm \
-                            -e SONAR_HOST_URL=${SONAR_HOST} \
-                            -e SONAR_TOKEN=${SONAR_TOKEN} \
-                            -v \${WORKSPACE}:/usr/src \
+                        docker run --rm \\
+                            -e SONAR_HOST_URL=${SONAR_HOST} \\
+                            -e SONAR_TOKEN=${SONAR_TOKEN} \\
+                            -e SONAR_SCANNER_OPTS="-Dsonar.projectKey=aceest-fitness -Dsonar.projectName=ACEest Fitness -Dsonar.sources=. -Dsonar.inclusions=app.py -Dsonar.python.version=3 -Dsonar.python.coverage.reportPaths=coverage.xml" \\
+                            -v \${WORKSPACE}:/usr/src \\
                             sonarsource/sonar-scanner-cli
                     """
                 }
