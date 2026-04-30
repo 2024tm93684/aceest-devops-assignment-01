@@ -41,6 +41,7 @@ curl http://localhost:8080/health
 ```
 
 ## All API Endpoints
+**Base URL:** https://aceest-devops-assignment-01.onrender.com
 | Method | Endpoint                     | Description                   |
 |--------|------------------------------|-------------------------------|
 | GET    | /                            | API status                    |
