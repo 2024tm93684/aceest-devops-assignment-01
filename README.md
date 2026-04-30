@@ -14,7 +14,7 @@ and dual CI/CD pipelines via GitHub Actions and Jenkins.
 | v1.1.2  | Aceestver1_1_2.py     | In-memory client store, /clients, /export        |
 | v2.0.1  | Aceestver2_0_1.py     | SQLite DB, /client persists, /progress, tests    |
 | v2.1.2  | Aceestver-2_1_2.py    | Code refactor — no new endpoints                 |
-| v2.2.1  | Aceestver-2_2_1.py    | GET /progress/<client>                           |
+| v2.2.1  | Aceestver-2_2_1.py    | GET /progress/&lt;client&gt;                           |
 | v2.2.4  | Aceestver-2_2_4.py    | 4 programs, /workout, /metrics, /bmi             |
 | v3.0.1  | Aceestver-3_0_1.py    | GET /status endpoint                             |
 | v3.1.2  | Aceestver-3_1_2.py    | POST /login, GET /users, Jenkinsfile             |
@@ -48,25 +48,25 @@ curl http://localhost:8080/health
 | GET    | /health                      | Health check                  |
 | GET    | /status                      | Live client count             |
 | GET    | /programs                    | List all programs             |
-| GET    | /program/<name>              | Program detail                |
+| GET    | /program/&lt;name&gt;              | Program detail                |
 | POST   | /calculate_calories          | Calorie calculation           |
 | POST   | /client                      | Save client to DB             |
-| GET    | /client/<name>               | Get client from DB            |
+| GET    | /client/&lt;name&gt;               | Get client from DB            |
 | GET    | /clients                     | List all clients              |
 | GET    | /export_clients              | Export client data as JSON    |
 | GET    | /site_metrics                | Gym capacity & break-even     |
 | POST   | /progress                    | Log weekly adherence          |
-| GET    | /progress/<name>             | Get adherence chart data      |
+| GET    | /progress/&lt;name&gt;             | Get adherence chart data      |
 | POST   | /workout                     | Log workout session           |
-| GET    | /workouts/<name>             | Get workout history           |
+| GET    | /workouts/&lt;name&gt;             | Get workout history           |
 | POST   | /metrics                     | Log body metrics              |
-| GET    | /metrics/<name>              | Get body metrics history      |
-| GET    | /bmi/<name>                  | Calculate BMI                 |
+| GET    | /metrics/&lt;name&gt;              | Get body metrics history      |
+| GET    | /bmi/&lt;name&gt;                  | Calculate BMI                 |
 | POST   | /login                       | Authenticate user             |
 | GET    | /users                       | List all users                |
-| GET    | /generate_program/<name>     | AI-style program generator    |
-| GET    | /generate_pdf/<name>         | Generate PDF client report    |
-| GET    | /membership/<name>           | Check membership expiry       |
+| GET    | /generate_program/&lt;name&gt;     | AI-style program generator    |
+| GET    | /generate_pdf/&lt;name&gt;         | Generate PDF client report    |
+| GET    | /membership/&lt;name&gt;           | Check membership expiry       |
 
 ## Running Tests Manually
 ```bash
